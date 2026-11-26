@@ -1,58 +1,24 @@
 import React, { useState } from "react";
+import AboutUs from "./AboutUs";
 import ProductList from "./ProductList";
-import CartItem from "./CartItem";
+import "./App.css";
 
 function App() {
-  const [cart, setCart] = useState([]);
-  const [page, setPage] = useState("home");
-
-  const totalItems = cart.reduce(
-    (total, item) => total + item.quantity, 0
-  );
+  const [showProductList, setShowProductList] = useState(false);
 
   return (
     <div>
-      <header style={{
-        backgroundColor: "#4CAF50",
-        color: "white",
-        padding: "20px"
-      }}>
-        <h1>Paradise Nursery</h1>
-
-        <button onClick={() => setPage("products")}>
-          Plants
-        </button>
-
-        <button onClick={() => setPage("cart")}>
-          Shopping Cart ({totalItems})
-        </button>
-      </header>
-
-      {page === "home" && (
-        <div>
-          <h1>Welcome to Paradise Nursery</h1>
+      {!showProductList ? (
+        <div className="landing-page">
+          <h1>Paradise Nursery</h1>
           <p>Where Green Meets Serenity</p>
-          <p>
-            Discover our beautiful collection of
-            indoor plants.
-          </p>
-
-          <button onClick={() => setPage("products")}>
+          <AboutUs />
+          <button onClick={() => setShowProductList(true)}>
             Get Started
           </button>
         </div>
-      )}
-
-      {page === "products" && (
-        <ProductList cart={cart} setCart={setCart} />
-      )}
-
-      {page === "cart" && (
-        <CartItem
-          cart={cart}
-          setCart={setCart}
-          onContinueShopping={() => setPage("products")}
-        />
+      ) : (
+        <ProductList onHome={() => setShowProductList(false)} />
       )}
     </div>
   );
